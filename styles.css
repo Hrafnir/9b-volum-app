@@ -39,7 +39,7 @@ button {
 }
 
 .app-shell {
-  width: min(1180px, 100%);
+  width: min(1540px, 100%);
   margin: 0 auto;
   padding: 28px 18px 36px;
 }
@@ -107,7 +107,7 @@ h2 {
 
 .main-grid {
   display: grid;
-  grid-template-columns: minmax(270px, 0.9fr) minmax(320px, 1.25fr);
+  grid-template-columns: minmax(300px, 0.82fr) minmax(440px, 1.45fr);
   gap: 16px;
   align-items: stretch;
 }
@@ -194,23 +194,23 @@ h2 {
 }
 
 .prism-panel {
-  min-height: 430px;
+  min-height: 500px;
   display: grid;
   grid-template-rows: auto 1fr;
 }
 
 .prism-stage {
   position: relative;
-  min-height: 330px;
+  min-height: 400px;
   overflow: hidden;
   display: grid;
   place-items: center;
 }
 
 .prism {
-  width: min(100%, 650px);
-  height: min(330px, 58vw);
-  min-height: 260px;
+  width: min(100%, 760px);
+  height: min(420px, 58vw);
+  min-height: 330px;
   display: block;
 }
 
@@ -220,7 +220,7 @@ h2 {
   height: 48px;
   border-radius: 50%;
   background: rgba(25, 49, 61, 0.14);
-  transform: translateY(118px) skewX(-18deg);
+  transform: translateY(150px) skewX(-18deg);
 }
 
 .svg-face {
@@ -319,20 +319,37 @@ h2 {
 }
 
 .milk-shelf {
+  --carton-width: 58px;
+  --carton-height: 118px;
+  --carton-gap: 14px;
   min-height: 184px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 14px;
-  padding: 6px 18px 2px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--carton-width), var(--carton-width)));
+  align-items: end;
+  justify-content: center;
+  gap: var(--carton-gap);
+  padding: 8px 18px 2px;
+}
+
+.milk-shelf[data-density="medium"] {
+  --carton-width: 38px;
+  --carton-height: 78px;
+  --carton-gap: 8px;
+  min-height: 360px;
+}
+
+.milk-shelf[data-density="small"] {
+  --carton-width: 22px;
+  --carton-height: 44px;
+  --carton-gap: 4px;
+  min-height: 700px;
 }
 
 .carton {
   --fill: 100%;
   position: relative;
-  width: 58px;
-  height: 118px;
-  flex: 0 0 auto;
+  width: var(--carton-width);
+  height: var(--carton-height);
   border: 2px solid var(--ink);
   background: linear-gradient(to top, #f7fbff var(--fill), #ffffff var(--fill));
   box-shadow: 4px 4px 0 rgba(25, 49, 61, 0.16);
@@ -343,7 +360,7 @@ h2 {
   content: "";
   position: absolute;
   inset: 0 0 auto;
-  height: 28px;
+  height: 24%;
   background: linear-gradient(135deg, var(--blue) 0 52%, #ffffff 52%);
   border-bottom: 2px solid var(--ink);
 }
@@ -352,11 +369,38 @@ h2 {
   content: "MELK";
   position: absolute;
   left: 50%;
-  top: 54px;
+  top: 46%;
   transform: translateX(-50%);
   color: var(--blue);
   font-size: 0.78rem;
   font-weight: 900;
+}
+
+.milk-shelf[data-density="medium"] .carton {
+  border-width: 1.5px;
+  box-shadow: 3px 3px 0 rgba(25, 49, 61, 0.13);
+}
+
+.milk-shelf[data-density="medium"] .carton::before {
+  border-bottom-width: 1.5px;
+}
+
+.milk-shelf[data-density="medium"] .carton::after {
+  font-size: 0.52rem;
+}
+
+.milk-shelf[data-density="small"] .carton {
+  border-width: 1px;
+  box-shadow: 2px 2px 0 rgba(25, 49, 61, 0.1);
+}
+
+.milk-shelf[data-density="small"] .carton::before {
+  border-bottom-width: 1px;
+}
+
+.milk-shelf[data-density="small"] .carton::after,
+.milk-shelf[data-density="small"] .carton-label {
+  display: none;
 }
 
 .carton-fill {
@@ -408,6 +452,12 @@ h2 {
     grid-column: auto;
   }
 
+  .milk-shelf[data-density="small"] {
+    --carton-width: 20px;
+    --carton-height: 40px;
+    min-height: 860px;
+  }
+
   .result-grid,
   .preset-row {
     grid-template-columns: 1fr;
@@ -424,6 +474,10 @@ h2 {
   }
 
   .prism-stage {
-    min-height: 285px;
+    min-height: 330px;
+  }
+
+  .prism {
+    min-height: 300px;
   }
 }

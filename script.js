@@ -92,8 +92,8 @@ function updatePrism(length, width, height) {
   const depth = 48 + (width / biggest) * 100;
   const depthX = depth;
   const depthY = depth * 0.42;
-  const left = 82;
-  const top = 62 + (245 - prismHeight) * 0.22;
+  const left = 92;
+  const top = 72 + (245 - prismHeight) * 0.2;
 
   const a = { x: left, y: top + depthY };
   const b = { x: left + prismWidth, y: top + depthY };
@@ -138,6 +138,7 @@ function updatePrism(length, width, height) {
 
 function renderMilk(liters) {
   elements.milkShelf.innerHTML = "";
+  elements.milkShelf.removeAttribute("data-density");
 
   if (liters <= 0) {
     elements.milkShelf.textContent = "Skriv inn mål større enn 0.";
@@ -147,12 +148,19 @@ function renderMilk(liters) {
 
   const fullCartons = Math.floor(liters);
   const remainder = liters - fullCartons;
-  const visibleFull = Math.min(fullCartons, 18);
-  const hasRemainder = remainder > 0.01 && visibleFull < 18;
-  const totalVisible = visibleFull + (hasRemainder ? 1 : 0);
+  const maxVisibleCartons = 1000;
+  const hasRemainder = remainder > 0.01;
+  const cartonCount = Math.min(fullCartons + (hasRemainder ? 1 : 0), maxVisibleCartons);
 
-  for (let index = 0; index < totalVisible; index += 1) {
-    const fill = index < visibleFull ? 1 : remainder;
+  if (cartonCount > 150) {
+    elements.milkShelf.dataset.density = "small";
+  } else if (cartonCount > 30) {
+    elements.milkShelf.dataset.density = "medium";
+  }
+
+  for (let index = 0; index < cartonCount; index += 1) {
+    const isRemainder = index === fullCartons && hasRemainder && cartonCount <= maxVisibleCartons;
+    const fill = isRemainder ? remainder : 1;
     const carton = document.createElement("div");
     carton.className = "carton";
     carton.style.setProperty("--fill", `${Math.max(fill * 100, 8)}%`);
@@ -170,18 +178,14 @@ function renderMilk(liters) {
     elements.milkShelf.appendChild(carton);
   }
 
-  if (fullCartons > 18) {
-    const extra = document.createElement("div");
-    extra.className = "milk-note";
-    extra.textContent = `+ ${formatNumber(fullCartons - 18, 0)} flere fulle kartonger`;
-    elements.milkShelf.appendChild(extra);
-  }
-
   elements.milkSummary.textContent = `Det tilsvarer ${formatNumber(liters)} melkekartonger på 1 liter.`;
-  elements.milkNote.textContent =
-    liters < 1
-      ? "Under 1 liter vises som en delvis fylt melkekartong."
-      : "Hver full kartong viser 1 liter. Delvis fylt kartong viser resten.";
+  if (liters > maxVisibleCartons) {
+    elements.milkNote.textContent = `Her vises 1000 melkekartonger. Resten er ${formatNumber(liters - maxVisibleCartons)} liter til.`;
+  } else if (liters < 1) {
+    elements.milkNote.textContent = "Under 1 liter vises som en delvis fylt melkekartong.";
+  } else {
+    elements.milkNote.textContent = "Hver kartong viser 1 liter. Ved desimaltall viser siste kartong resten.";
+  }
 }
 
 function update() {
