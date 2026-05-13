@@ -86,14 +86,25 @@ function setPreset(name) {
 }
 
 function updatePrism(length, width, height) {
-  const biggest = Math.max(length, width, height, 1);
-  const prismWidth = 150 + (length / biggest) * 190;
-  const prismHeight = 95 + (height / biggest) * 150;
-  const depth = 48 + (width / biggest) * 100;
-  const depthX = depth;
-  const depthY = depth * 0.42;
-  const left = 92;
-  const top = 72 + (245 - prismHeight) * 0.2;
+  const safeLength = Math.max(length, 0.01);
+  const safeWidth = Math.max(width, 0.01);
+  const safeHeight = Math.max(height, 0.01);
+  const depthAngleX = 0.72;
+  const depthAngleY = 0.34;
+  const maxProjectedWidth = 390;
+  const maxProjectedHeight = 290;
+  const scale = Math.min(
+    maxProjectedWidth / (safeLength + safeWidth * depthAngleX),
+    maxProjectedHeight / (safeHeight + safeWidth * depthAngleY),
+  );
+  const prismWidth = safeLength * scale;
+  const prismHeight = safeHeight * scale;
+  const depthX = safeWidth * scale * depthAngleX;
+  const depthY = safeWidth * scale * depthAngleY;
+  const projectedWidth = prismWidth + depthX;
+  const projectedHeight = prismHeight + depthY;
+  const left = (560 - projectedWidth) / 2;
+  const top = (420 - projectedHeight) / 2;
 
   const a = { x: left, y: top + depthY };
   const b = { x: left + prismWidth, y: top + depthY };
@@ -128,11 +139,11 @@ function updatePrism(length, width, height) {
     .map(([start, end, className = ""]) => `<line class="${className}" x1="${start.x}" y1="${start.y}" x2="${end.x}" y2="${end.y}"></line>`)
     .join("");
 
-  elements.lengthLabel.setAttribute("x", String((d.x + c.x) / 2 - 35));
-  elements.lengthLabel.setAttribute("y", String(d.y + 30));
-  elements.widthLabel.setAttribute("x", String((c.x + g.x) / 2 + 8));
-  elements.widthLabel.setAttribute("y", String((c.y + g.y) / 2 + 20));
-  elements.heightLabel.setAttribute("x", String(a.x - 58));
+  elements.lengthLabel.setAttribute("x", String(Math.max(12, (d.x + c.x) / 2 - 35)));
+  elements.lengthLabel.setAttribute("y", String(Math.min(405, d.y + 30)));
+  elements.widthLabel.setAttribute("x", String(Math.min(500, (c.x + g.x) / 2 + 8)));
+  elements.widthLabel.setAttribute("y", String(Math.min(405, (c.y + g.y) / 2 + 20)));
+  elements.heightLabel.setAttribute("x", String(Math.max(12, a.x - 62)));
   elements.heightLabel.setAttribute("y", String((a.y + d.y) / 2));
 }
 
