@@ -71,14 +71,29 @@
             </div>
             <div class="prism-stage" aria-hidden="true">
               <div class="prism-shadow"></div>
-              <div class="prism" id="prism">
-                <div class="face front"></div>
-                <div class="face top"></div>
-                <div class="face side"></div>
-              </div>
-              <div class="axis-label axis-length">lengde</div>
-              <div class="axis-label axis-width">bredde</div>
-              <div class="axis-label axis-height">høyde</div>
+              <svg class="prism" id="prism" viewBox="0 0 520 330" role="img">
+                <defs>
+                  <linearGradient id="frontGradient" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#39bbb0"></stop>
+                    <stop offset="100%" stop-color="#5b9de0"></stop>
+                  </linearGradient>
+                  <linearGradient id="topGradient" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#f4c95d"></stop>
+                    <stop offset="100%" stop-color="#8bcf8c"></stop>
+                  </linearGradient>
+                  <linearGradient id="sideGradient" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#ef8b68"></stop>
+                    <stop offset="100%" stop-color="#4b83d4"></stop>
+                  </linearGradient>
+                </defs>
+                <polygon id="topFace" class="svg-face top-face"></polygon>
+                <polygon id="sideFace" class="svg-face side-face"></polygon>
+                <polygon id="frontFace" class="svg-face front-face"></polygon>
+                <g class="svg-edges" id="prismEdges"></g>
+                <text id="lengthLabel" class="svg-label">lengde</text>
+                <text id="widthLabel" class="svg-label">bredde</text>
+                <text id="heightLabel" class="svg-label">høyde</text>
+              </svg>
             </div>
           </section>
 

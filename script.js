@@ -9,6 +9,13 @@ const elements = {
   tabs: document.querySelectorAll(".shape-tab"),
   presets: document.querySelectorAll(".preset"),
   prism: document.querySelector("#prism"),
+  frontFace: document.querySelector("#frontFace"),
+  topFace: document.querySelector("#topFace"),
+  sideFace: document.querySelector("#sideFace"),
+  prismEdges: document.querySelector("#prismEdges"),
+  lengthLabel: document.querySelector("#lengthLabel"),
+  widthLabel: document.querySelector("#widthLabel"),
+  heightLabel: document.querySelector("#heightLabel"),
   dimensions: document.querySelector("#dimensionText"),
   formula: document.querySelector("#formulaText"),
   cm3: document.querySelector("#cm3Text"),
@@ -80,13 +87,53 @@ function setPreset(name) {
 
 function updatePrism(length, width, height) {
   const biggest = Math.max(length, width, height, 1);
-  const displayWidth = 110 + (length / biggest) * 150;
-  const displayHeight = 90 + (height / biggest) * 125;
-  const displayDepth = 55 + (width / biggest) * 105;
+  const prismWidth = 150 + (length / biggest) * 190;
+  const prismHeight = 95 + (height / biggest) * 150;
+  const depth = 48 + (width / biggest) * 100;
+  const depthX = depth;
+  const depthY = depth * 0.42;
+  const left = 82;
+  const top = 62 + (245 - prismHeight) * 0.22;
 
-  elements.prism.style.setProperty("--w", `${displayWidth}px`);
-  elements.prism.style.setProperty("--h", `${displayHeight}px`);
-  elements.prism.style.setProperty("--d", `${displayDepth}px`);
+  const a = { x: left, y: top + depthY };
+  const b = { x: left + prismWidth, y: top + depthY };
+  const c = { x: left + prismWidth, y: top + depthY + prismHeight };
+  const d = { x: left, y: top + depthY + prismHeight };
+  const e = { x: left + depthX, y: top };
+  const f = { x: left + prismWidth + depthX, y: top };
+  const g = { x: left + prismWidth + depthX, y: top + prismHeight };
+  const h = { x: left + depthX, y: top + prismHeight };
+
+  const points = (...items) => items.map((point) => `${point.x},${point.y}`).join(" ");
+  elements.frontFace.setAttribute("points", points(a, b, c, d));
+  elements.topFace.setAttribute("points", points(a, b, f, e));
+  elements.sideFace.setAttribute("points", points(b, f, g, c));
+
+  const edges = [
+    [a, b],
+    [b, c],
+    [c, d],
+    [d, a],
+    [a, e],
+    [b, f],
+    [c, g],
+    [e, f],
+    [f, g],
+    [d, h, "hidden-edge"],
+    [e, h, "hidden-edge"],
+    [h, g, "hidden-edge"],
+  ];
+
+  elements.prismEdges.innerHTML = edges
+    .map(([start, end, className = ""]) => `<line class="${className}" x1="${start.x}" y1="${start.y}" x2="${end.x}" y2="${end.y}"></line>`)
+    .join("");
+
+  elements.lengthLabel.setAttribute("x", String((d.x + c.x) / 2 - 35));
+  elements.lengthLabel.setAttribute("y", String(d.y + 30));
+  elements.widthLabel.setAttribute("x", String((c.x + g.x) / 2 + 8));
+  elements.widthLabel.setAttribute("y", String((c.y + g.y) / 2 + 20));
+  elements.heightLabel.setAttribute("x", String(a.x - 58));
+  elements.heightLabel.setAttribute("y", String((a.y + d.y) / 2));
 }
 
 function renderMilk(liters) {

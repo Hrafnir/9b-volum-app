@@ -205,83 +205,61 @@ h2 {
   overflow: hidden;
   display: grid;
   place-items: center;
-  perspective: 900px;
 }
 
 .prism {
-  --w: 210px;
-  --h: 140px;
-  --d: 95px;
-  position: relative;
-  width: var(--w);
-  height: var(--h);
-  transform-style: preserve-3d;
-  transform: rotateX(-18deg) rotateY(28deg);
-  transition: width 220ms ease, height 220ms ease;
-}
-
-.face {
-  position: absolute;
-  border: 2px solid rgba(25, 49, 61, 0.82);
-}
-
-.front {
-  width: var(--w);
-  height: var(--h);
-  background: linear-gradient(145deg, rgba(38, 166, 161, 0.82), rgba(75, 131, 212, 0.74));
-  transform: translateZ(calc(var(--d) / 2));
-}
-
-.top {
-  width: var(--w);
-  height: var(--d);
-  background: linear-gradient(135deg, rgba(244, 201, 93, 0.88), rgba(139, 207, 140, 0.78));
-  transform: rotateX(90deg) translateZ(calc(var(--d) / 2));
-  transform-origin: top;
-}
-
-.side {
-  width: var(--d);
-  height: var(--h);
-  right: calc(var(--d) / -2);
-  background: linear-gradient(145deg, rgba(239, 111, 94, 0.82), rgba(244, 201, 93, 0.76));
-  transform: rotateY(90deg) translateZ(calc(var(--d) / 2));
-  transform-origin: left;
+  width: min(100%, 650px);
+  height: min(330px, 58vw);
+  min-height: 260px;
+  display: block;
 }
 
 .prism-shadow {
   position: absolute;
-  width: 310px;
+  width: min(52%, 330px);
   height: 48px;
   border-radius: 50%;
   background: rgba(25, 49, 61, 0.14);
-  transform: translateY(128px) skewX(-18deg);
+  transform: translateY(118px) skewX(-18deg);
 }
 
-.axis-label {
-  position: absolute;
-  padding: 5px 8px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 0.8rem;
-  font-weight: 800;
+.svg-face {
+  stroke: rgba(25, 49, 61, 0.78);
+  stroke-width: 3;
+  stroke-linejoin: round;
 }
 
-.axis-length {
-  bottom: 46px;
-  left: 37%;
+.front-face {
+  fill: url("#frontGradient");
 }
 
-.axis-width {
-  bottom: 88px;
-  right: 18%;
+.top-face {
+  fill: url("#topGradient");
 }
 
-.axis-height {
-  top: 96px;
-  left: 21%;
+.side-face {
+  fill: url("#sideGradient");
+}
+
+.svg-edges line {
+  stroke: rgba(25, 49, 61, 0.88);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.svg-edges .hidden-edge {
+  stroke: rgba(25, 49, 61, 0.36);
+  stroke-dasharray: 7 7;
+}
+
+.svg-label {
+  paint-order: stroke;
+  stroke: rgba(255, 255, 255, 0.92);
+  stroke-width: 8;
+  stroke-linejoin: round;
+  fill: var(--muted);
+  font-size: 18px;
+  font-weight: 850;
 }
 
 .result-panel,
@@ -447,13 +425,5 @@ h2 {
 
   .prism-stage {
     min-height: 285px;
-  }
-
-  .axis-height {
-    left: 8%;
-  }
-
-  .axis-width {
-    right: 8%;
   }
 }
