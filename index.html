@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="no">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>9B sin supre volum-app</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace" aria-labelledby="app-title">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Måleenheter, prismer og liter</p>
+            <h1 id="app-title">9B sin supre volum-app</h1>
+          </div>
+          <div class="quick-fact" aria-label="Nyttig regel">
+            <span>1 dm³</span>
+            <strong>= 1 liter</strong>
+          </div>
+        </header>
+
+        <div class="main-grid">
+          <section class="panel controls" aria-labelledby="controls-title">
+            <div class="panel-heading">
+              <h2 id="controls-title">Lag et prisme</h2>
+              <p>Velg mål og enhet. Appen regner om volumet til liter.</p>
+            </div>
+
+            <div class="shape-tabs" role="tablist" aria-label="Velg prisme">
+              <button class="shape-tab is-active" type="button" data-shape="box" role="tab" aria-selected="true">Rektangulært</button>
+              <button class="shape-tab" type="button" data-shape="cube" role="tab" aria-selected="false">Terning</button>
+            </div>
+
+            <label class="field">
+              <span>Lengde</span>
+              <input id="lengthInput" type="number" min="0.1" max="999" step="0.1" value="4">
+            </label>
+
+            <label class="field">
+              <span>Bredde</span>
+              <input id="widthInput" type="number" min="0.1" max="999" step="0.1" value="3">
+            </label>
+
+            <label class="field">
+              <span>Høyde</span>
+              <input id="heightInput" type="number" min="0.1" max="999" step="0.1" value="2">
+            </label>
+
+            <label class="field">
+              <span>Måleenhet</span>
+              <select id="unitSelect">
+                <option value="mm">millimeter (mm)</option>
+                <option value="cm" selected>centimeter (cm)</option>
+                <option value="dm">desimeter (dm)</option>
+                <option value="m">meter (m)</option>
+              </select>
+            </label>
+
+            <div class="preset-row" aria-label="Eksempler">
+              <button type="button" class="preset" data-preset="milk">1 melkekartong</button>
+              <button type="button" class="preset" data-preset="shoebox">Skoboks</button>
+              <button type="button" class="preset" data-preset="pool">Lite basseng</button>
+            </div>
+          </section>
+
+          <section class="panel prism-panel" aria-labelledby="prism-title">
+            <div class="panel-heading">
+              <h2 id="prism-title">Prismet ditt</h2>
+              <p id="dimensionText">4 cm x 3 cm x 2 cm</p>
+            </div>
+            <div class="prism-stage" aria-hidden="true">
+              <div class="prism-shadow"></div>
+              <div class="prism" id="prism">
+                <div class="face front"></div>
+                <div class="face top"></div>
+                <div class="face side"></div>
+              </div>
+              <div class="axis-label axis-length">lengde</div>
+              <div class="axis-label axis-width">bredde</div>
+              <div class="axis-label axis-height">høyde</div>
+            </div>
+          </section>
+
+          <section class="panel result-panel" aria-labelledby="result-title">
+            <div class="panel-heading">
+              <h2 id="result-title">Volum</h2>
+              <p>Volum = lengde x bredde x høyde</p>
+            </div>
+            <div class="formula" id="formulaText">4 x 3 x 2 = 24 cm³</div>
+            <div class="result-grid">
+              <div>
+                <span class="label">I kubikkcentimeter</span>
+                <strong id="cm3Text">24 cm³</strong>
+              </div>
+              <div>
+                <span class="label">I kubikkdesimeter</span>
+                <strong id="dm3Text">0,024 dm³</strong>
+              </div>
+              <div class="liter-result">
+                <span class="label">I liter</span>
+                <strong id="literText">0,024 L</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel milk-panel" aria-labelledby="milk-title">
+            <div class="panel-heading">
+              <h2 id="milk-title">Som melkekartonger</h2>
+              <p id="milkSummary">Det tilsvarer 0,024 melkekartonger på 1 liter.</p>
+            </div>
+            <div class="milk-shelf" id="milkShelf" aria-label="Visualisering av liter med melkekartonger"></div>
+            <div class="milk-note" id="milkNote">En full kartong viser 1 liter. Delvis fylte kartonger viser resten.</div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
